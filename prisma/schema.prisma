@@ -14,34 +14,51 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  name     String
-  email    String @unique
-  password String
-  role Role
+  id        Int        @id @default(autoincrement())
+  name      String
+  email     String     @unique
+  password  String
+  image     String[]
+  role      Role
+  region_id Int
+  region    Region     @relation(fields: [region_id], references: [id])
+  Sessions  Sessions[]
+}
+
+model Sessions {
+  id     String @id @default(uuid())
+  ip     String
+  userId Int
+  user   User   @relation(fields: [userId], references: [id])
 }
 
 model Mentor {
-  id Int @id @default(autoincrement())
-  name String
-  phone String
-  email String @unique
+  id       Int          @id @default(autoincrement())
+  name     String
+  phone    String
+  email    String       @unique
   password String
-  status mentorStatus
-  image String[]
-  ieltes Int
+  status   mentorStatus
+  image    String[]
+  ieltes   Int
   centr_id Int
 }
 
 model Centr {
-  id Int @id @default(autoincrement())
-  name String
-  email String @unique
-  phone String
+  id       Int          @id @default(autoincrement())
+  name     String
+  email    String       @unique
+  phone    String
   password String
-  pasport String
-  image String[]
-  status  centr_status
+  pasport  String
+  image    String[]
+  status   centr_status
+}
+
+model Region {
+  id   Int    @id @default(autoincrement())
+  name String
+  User User[]
 }
 
 enum Role {
